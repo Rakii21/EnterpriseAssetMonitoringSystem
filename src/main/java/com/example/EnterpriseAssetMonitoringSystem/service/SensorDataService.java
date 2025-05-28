@@ -1,6 +1,8 @@
 package com.example.EnterpriseAssetMonitoringSystem.service;
 import com.example.EnterpriseAssetMonitoringSystem.dto.SensorDataDTO;
+import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
 import com.example.EnterpriseAssetMonitoringSystem.entity.SensorData;
+import com.example.EnterpriseAssetMonitoringSystem.repository.AssetRepository;
 import com.example.EnterpriseAssetMonitoringSystem.repository.SensorDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,16 +17,16 @@ import java.util.List;
 @Service
 public class SensorDataService {
     @Autowired
-    private SensorDataRepository sensorRepo;
+    private  SensorDataRepository sensorRepo;
 
     @Autowired
-    private AssetRepository assetRepo;
+    private  AssetRepository assetRepo;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private  JdbcTemplate jdbcTemplate;
 
     // Save sensor data entry with random temperature ad pressure from dummy table uses assetId from DTO
-    public SensorData saveSensorData(SensorDataDTO dto){
+    public  SensorData saveSensorData(SensorDataDTO dto){
 
         // Fetch Asset from DB....
         // dto.getAssetId() extracts the assetId from incoming request
