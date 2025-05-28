@@ -27,7 +27,10 @@ public class UserController {
     }
 
     @PutMapping("/{id}/role")
-    public User updateUserRole(@PathVariable Long id, @RequestParam String role) {
-        return userService.updateRole(id, role);
+    public User updateUserRole(@PathVariable Long id,
+                               @RequestParam String role,
+                               @RequestParam Long requesterId) {
+        return userService.updateRoleByManager(requesterId, id, role);
     }
+
 }
