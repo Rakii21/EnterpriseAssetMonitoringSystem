@@ -9,25 +9,26 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
+
 @RestController
 @RequestMapping("/api/maintenance")
 @RequiredArgsConstructor
 public class MaintenanceController {
+
     private final MaintenanceService maintenanceService;
 
-    //Schedule maintenance
     @PostMapping("/schedule")
-    public MaintenanceLog schedule(@RequestBody ScheduleMaintenanceDTO dto) {
-        return maintenanceService.scheduleMaintenance(dto);
+    public MaintenanceLog schedule(@RequestBody @Valid ScheduleMaintenanceDTO dto, @RequestParam Long userId) {
+        return maintenanceService.scheduleMaintenance(dto, userId);
     }
 
-    //Complete a maintenance event
     @PutMapping("/complete")
-    public MaintenanceLog complete(@RequestBody CompleteMaintenanceDTO dto) {
-        return maintenanceService.completeMaintenance(dto);
+    public MaintenanceLog complete(@RequestBody @Valid CompleteMaintenanceDTO dto, @RequestParam Long userId) {
+        return maintenanceService.completeMaintenance(dto, userId);
     }
 
-    //Get all logs for an asset
     @GetMapping("/asset/{assetId}")
     public List<MaintenanceLog> getLogsByAsset(@PathVariable Long assetId) {
         return maintenanceService.getLogsByAsset(assetId);
