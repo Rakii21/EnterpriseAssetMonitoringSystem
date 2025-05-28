@@ -1,4 +1,4 @@
-package com.example.EnterpriseAssetMonitoringSystem;
+package com.example.EnterpriseAssetMonitoringSystem.ServiceTesting;
 
 import com.example.EnterpriseAssetMonitoringSystem.dto.SensorDataDTO;
 import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
