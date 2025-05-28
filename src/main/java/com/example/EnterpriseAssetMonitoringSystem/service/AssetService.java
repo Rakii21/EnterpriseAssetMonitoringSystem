@@ -1,8 +1,11 @@
 package com.example.EnterpriseAssetMonitoringSystem.service;
+
+import com.example.EnterpriseAssetMonitoringSystem.dto.AssetDTO;
+import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
+import com.example.EnterpriseAssetMonitoringSystem.entity.Role;
+import com.example.EnterpriseAssetMonitoringSystem.entity.User;
 import com.example.EnterpriseAssetMonitoringSystem.repository.AssetRepository;
 import com.example.EnterpriseAssetMonitoringSystem.repository.UserRepository;
-import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
-import com.example.EnterpriseAssetMonitoringSystem.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,24 +14,38 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AssetService {
-    // Repositories for asset operation and user operation
+
     private final AssetRepository assetRepo;
     private final UserRepository userRepo;
-    // Method to add a new asset
-    public Asset addAsset(Asset asset){
+    private final UserService userService;
+
+    public Asset addAsset(AssetDTO dto) {
+        User user = userService.getUserById(dto.getCreatedByUserId());
+        if (user.getRole() != Role.MANAGER) {
+            throw new RuntimeException("Only MANAGERs can add assets");
+        }
+        Asset asset = new Asset();
+        asset.setName(dto.getName());
+        asset.setType(dto.getType());
+        asset.setLocation(dto.getLocation());
+        asset.setThresholdTemp(dto.getThresholdTemp());
+        asset.setThresholdPressure(dto.getThresholdPressure());
         return assetRepo.save(asset);
     }
-    // Method to retrieve all assets
-    public List<Asset> getAllAssets(){
+
+    public List<Asset> getAllAssets() {
         return assetRepo.findAll();
     }
-    // Method to retrieve all asset by asset ID
-    public Asset getAssetById(Long id){
-        return assetRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Asset not found"));
+
+    public Asset getAssetById(Long id) {
+        return assetRepo.findById(id).orElseThrow(() -> new RuntimeException("Asset not found"));
     }
-    // Method to update an existing asset
-    public Asset updateAsset(Long id, Asset updated){
+
+    public Asset updateAsset(Long id, Asset updated, Long userId) {
+        User user = userService.getUserById(userId);
+        if (user.getRole() != Role.MANAGER) {
+            throw new RuntimeException("Only MANAGERs can update assets");
+        }
         Asset asset = getAssetById(id);
         asset.setName(updated.getName());
         asset.setType(updated.getType());
@@ -37,19 +54,27 @@ public class AssetService {
         asset.setThresholdPressure(updated.getThresholdPressure());
         return assetRepo.save(asset);
     }
-    // Method to delete an asset by its ID
-    public void deleteAsset(Long id){
+
+    public void deleteAsset(Long id, Long userId) {
+        User user = userService.getUserById(userId);
+        if (user.getRole() != Role.MANAGER) {
+            throw new RuntimeException("Only MANAGERs can delete assets");
+        }
         assetRepo.deleteById(id);
     }
-    // Method to assign an asset to user
-    public Asset assignToUser(Long assetId, Long userId){
+
+    public Asset assignToUser(Long assetId, Long userId, Long assignedById) {
+        User manager = userService.getUserById(assignedById);
+        if (manager.getRole() != Role.MANAGER) {
+            throw new RuntimeException("Only MANAGERs can assign assets");
+        }
         Asset asset = getAssetById(assetId);
-        User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userService.getUserById(userId);
         asset.setAssignedTo(user);
         return assetRepo.save(asset);
     }
-    // Method to get assets assigned to a specific user
-    public List<Asset> getAssetByUser(Long id){
-        return assetRepo.findByAssignedToId(id);
+
+    public List<Asset> getAssetsByUser(Long userId) {
+        return assetRepo.findByAssignedToId(userId);
     }
 }
