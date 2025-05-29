@@ -7,7 +7,7 @@ import lombok.Data;
 // to capture login credentials
 
 @Data
-public class LoginRequest {
+public class LoginRequestDTO {
 	
 	@Email(message = "Invalid email format")
     @NotBlank(message = "Email is required")
