@@ -25,7 +25,6 @@ public class SensorDataService {
     @Autowired
     private  JdbcTemplate jdbcTemplate;
 
-    // Save sensor data entry with random temperature ad pressure from dummy table uses assetId from DTO
     public  SensorData saveSensorData(SensorDataDTO dto){
 
         // Fetch Asset from DB....

@@ -7,6 +7,7 @@ import com.example.EnterpriseAssetMonitoringSystem.entity.User;
 import com.example.EnterpriseAssetMonitoringSystem.repository.AssetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.example.EnterpriseAssetMonitoringSystem.exception.AssetException;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class AssetService {
     public Asset addAsset(AssetDTO dto) {
         User user = userService.getUserById(dto.getCreatedByUserId());
         if (user.getRole() != Role.MANAGER) {
-            throw new RuntimeException("Only MANAGERs can add assets");
+            throw new AssetException("Only MANAGERs can add assets");
         }
         Asset asset = new Asset();
         asset.setName(dto.getName());
@@ -39,13 +40,13 @@ public class AssetService {
     }
 
     public Asset getAssetById(Long id) {
-        return assetRepo.findById(id).orElseThrow(() -> new RuntimeException("Asset not found"));
+        return assetRepo.findById(id).orElseThrow(() -> new AssetException("Asset not found"));
     }
 
     public Asset updateAsset(Long id, Asset updated, Long userId) {
         User user = userService.getUserById(userId);
         if (user.getRole() != Role.MANAGER) {
-            throw new RuntimeException("Only MANAGERs can update assets");
+            throw new AssetException("Only MANAGERs can update assets");
         }
         Asset asset = getAssetById(id);
         asset.setName(updated.getName());
@@ -59,7 +60,7 @@ public class AssetService {
     public void deleteAsset(Long id, Long userId) {
         User user = userService.getUserById(userId);
         if (user.getRole() != Role.MANAGER) {
-            throw new RuntimeException("Only MANAGERs can delete assets");
+            throw new AssetException("Only MANAGERs can delete assets");
         }
         assetRepo.deleteById(id);
     }
@@ -67,7 +68,7 @@ public class AssetService {
     public Asset assignToUser(Long assetId, Long userId, Long assignedById) {
         User manager = userService.getUserById(assignedById);
         if (manager.getRole() != Role.MANAGER) {
-            throw new RuntimeException("Only MANAGERs can assign assets");
+            throw new AssetException("Only MANAGERs can assign assets");
         }
         Asset asset = getAssetById(assetId);
         User user = userService.getUserById(userId);

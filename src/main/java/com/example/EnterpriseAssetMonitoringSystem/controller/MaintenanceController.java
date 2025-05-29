@@ -4,6 +4,7 @@ import com.example.EnterpriseAssetMonitoringSystem.dto.CompleteMaintenanceDTO;
 import com.example.EnterpriseAssetMonitoringSystem.dto.ScheduleMaintenanceDTO;
 import com.example.EnterpriseAssetMonitoringSystem.entity.MaintenanceLog;
 import com.example.EnterpriseAssetMonitoringSystem.service.MaintenanceService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
-
+@Tag(name="Maintenance")
 @RestController
 @RequestMapping("/api/maintenance")
 @RequiredArgsConstructor
