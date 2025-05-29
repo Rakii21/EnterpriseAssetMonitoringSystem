@@ -5,7 +5,6 @@ import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
 import com.example.EnterpriseAssetMonitoringSystem.entity.Role;
 import com.example.EnterpriseAssetMonitoringSystem.entity.User;
 import com.example.EnterpriseAssetMonitoringSystem.repository.AssetRepository;
-import com.example.EnterpriseAssetMonitoringSystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +15,8 @@ import java.util.List;
 public class AssetService {
 
     private final AssetRepository assetRepo;
-    private final UserRepository userRepo;
     private final UserService userService;
+    private final UptimeService uptimeService;
 
     public Asset addAsset(AssetDTO dto) {
         User user = userService.getUserById(dto.getCreatedByUserId());
@@ -30,7 +29,9 @@ public class AssetService {
         asset.setLocation(dto.getLocation());
         asset.setThresholdTemp(dto.getThresholdTemp());
         asset.setThresholdPressure(dto.getThresholdPressure());
-        return assetRepo.save(asset);
+        Asset savedAsset = assetRepo.save(asset);
+        uptimeService.createUptime(savedAsset);
+        return savedAsset;
     }
 
     public List<Asset> getAllAssets() {
