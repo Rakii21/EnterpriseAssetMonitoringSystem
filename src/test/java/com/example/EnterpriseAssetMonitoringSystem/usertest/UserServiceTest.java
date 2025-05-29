@@ -2,78 +2,167 @@ package com.example.EnterpriseAssetMonitoringSystem.usertest;
 
 import com.example.EnterpriseAssetMonitoringSystem.entity.Role;
 import com.example.EnterpriseAssetMonitoringSystem.entity.User;
+import com.example.EnterpriseAssetMonitoringSystem.exception.UnauthorizedException;
+import com.example.EnterpriseAssetMonitoringSystem.exception.UserInvalidException;
+import com.example.EnterpriseAssetMonitoringSystem.exception.UserNotFoundException;
 import com.example.EnterpriseAssetMonitoringSystem.repository.UserRepository;
 import com.example.EnterpriseAssetMonitoringSystem.service.UserService;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Optional;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class UserServiceTest {
+class UserServiceTest {
+
     @Mock
     private UserRepository userRepo;
-    @Mock private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UserService userService;
+
+    private User user;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        user = new User(1L, "John Doe", "john@example.com", "encodedPass", Role.OPERATOR);
     }
 
     @Test
-    void register_ShouldSaveUser_WhenEmailNotTaken() {
-        User user = new User(null, "abc", "abc@gamil.com", "123", Role.OPERATOR);
+    void register_whenEmailNotUsed_shouldSaveUser() {
         when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.empty());
-        when(passwordEncoder.encode("123")).thenReturn("encoded123");
-        when(userRepo.save(any(User.class))).thenAnswer(i -> i.getArgument(0));
+        when(passwordEncoder.encode("rawPass")).thenReturn("encodedPass");
+        when(userRepo.save(any(User.class))).thenReturn(user);
 
-        User saved = userService.register(user);
+        User toRegister = new User(null, user.getName(), user.getEmail(), "rawPass", user.getRole());
+        User registered = userService.register(toRegister);
 
-        assertEquals("encoded123", saved.getPassword());
-        verify(userRepo).save(saved);
+        assertNotNull(registered);
+        assertEquals(user.getEmail(), registered.getEmail());
+        verify(passwordEncoder).encode("rawPass");
+        verify(userRepo).save(any(User.class));
     }
 
     @Test
-    void login_ShouldReturnUser_WhenCredentialsValid() {
-        User user = new User(1L, "abc", "abc@gmail.com", "encoded123", Role.OPERATOR);
-        when(userRepo.findByEmail("abc@gmail.com")).thenReturn(Optional.of(user));
-        when(passwordEncoder.matches("123", "encoded123")).thenReturn(true);
+    void register_whenEmailAlreadyUsed_shouldThrowException() {
+        when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
 
-        User result = userService.login("abc@gmail.com", "123");
+        User toRegister = new User(null, user.getName(), user.getEmail(), "rawPass", user.getRole());
 
-        assertEquals("abc", result.getName());
+        assertThrows(UserInvalidException.class, () -> userService.register(toRegister));
+        verify(userRepo, never()).save(any());
     }
 
     @Test
-    void getAllUsers_ShouldReturnUserList() {
-        List<User> users = List.of(new User(1L, "abc", "abc@gmail.com", "pass", Role.OPERATOR));
+    void login_whenCredentialsValid_shouldReturnUser() {
+        when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("rawPass", user.getPassword())).thenReturn(true);
+
+        User loggedIn = userService.login(user.getEmail(), "rawPass");
+
+        assertNotNull(loggedIn);
+        assertEquals(user.getEmail(), loggedIn.getEmail());
+    }
+
+    @Test
+    void login_whenInvalidPassword_shouldThrowException() {
+        when(userRepo.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("wrongPass", user.getPassword())).thenReturn(false);
+
+        assertThrows(UserInvalidException.class, () -> userService.login(user.getEmail(), "wrongPass"));
+    }
+
+    @Test
+    void login_whenEmailNotFound_shouldThrowException() {
+        when(userRepo.findByEmail("unknown@example.com")).thenReturn(Optional.empty());
+
+        assertThrows(UserInvalidException.class, () -> userService.login("unknown@example.com", "anyPass"));
+    }
+
+    @Test
+    void getAllUsers_shouldReturnList() {
+        List<User> users = List.of(user);
         when(userRepo.findAll()).thenReturn(users);
 
         List<User> result = userService.getAllUsers();
 
         assertEquals(1, result.size());
+        assertEquals(user.getEmail(), result.get(0).getEmail());
     }
 
     @Test
-    void updateRoleByManager_ShouldUpdateRole_WhenRequesterIsManager() {
-        User manager = new User(1L, "Manager", "m@gmail.com", "pass", Role.MANAGER);
-        User operator = new User(2L, "User", "u@egmail.com", "pass", Role.OPERATOR);
+    void getUserById_whenUserExists_shouldReturnUser() {
+        when(userRepo.findById(user.getId())).thenReturn(Optional.of(user));
 
-        when(userRepo.findById(1L)).thenReturn(Optional.of(manager));
-        when(userRepo.findById(2L)).thenReturn(Optional.of(operator));
-        when(userRepo.save(any())).thenAnswer(i -> i.getArgument(0));
+        User result = userService.getUserById(user.getId());
 
-        User updated = userService.updateRoleByManager(1L, 2L, "MANAGER");
+        assertEquals(user.getEmail(), result.getEmail());
+    }
+
+    @Test
+    void getUserById_whenUserNotFound_shouldThrowException() {
+        when(userRepo.findById(999L)).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.getUserById(999L));
+    }
+
+    @Test
+    void updateRole_whenUserExists_shouldUpdateRole() {
+        when(userRepo.findById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepo.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        User updated = userService.updateRole(user.getId(), "MANAGER");
+
+        assertEquals(Role.MANAGER, updated.getRole());
+        verify(userRepo).save(user);
+    }
+
+    @Test
+    void updateRole_whenUserNotFound_shouldThrowException() {
+        when(userRepo.findById(999L)).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> userService.updateRole(999L, "MANAGER"));
+    }
+
+    @Test
+    void updateRoleByManager_whenRequesterIsManager_shouldUpdateRole() {
+        User manager = new User(2L, "Manager", "manager@example.com", "pass", Role.MANAGER);
+        when(userRepo.findById(manager.getId())).thenReturn(Optional.of(manager));
+        when(userRepo.findById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepo.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        User updated = userService.updateRoleByManager(manager.getId(), user.getId(), "MANAGER");
 
         assertEquals(Role.MANAGER, updated.getRole());
     }
 
+    @Test
+    void updateRoleByManager_whenRequesterIsNotManager_shouldThrowException() {
+        User operator = new User(3L, "Operator", "op@example.com", "pass", Role.OPERATOR);
+        when(userRepo.findById(operator.getId())).thenReturn(Optional.of(operator));
+
+        assertThrows(UnauthorizedException.class, () -> userService.updateRoleByManager(operator.getId(), user.getId(), "MANAGER"));
+    }
+
+    @Test
+    void validateUserRole_whenRoleMatches_shouldNotThrow() {
+        when(userRepo.findById(user.getId())).thenReturn(Optional.of(user));
+
+        assertDoesNotThrow(() -> userService.validateUserRole(user.getId(), user.getRole()));
+    }
+
+    @Test
+    void validateUserRole_whenRoleDoesNotMatch_shouldThrow() {
+        when(userRepo.findById(user.getId())).thenReturn(Optional.of(user));
+
+        assertThrows(UnauthorizedException.class, () -> userService.validateUserRole(user.getId(), Role.MANAGER));
+    }
 }
