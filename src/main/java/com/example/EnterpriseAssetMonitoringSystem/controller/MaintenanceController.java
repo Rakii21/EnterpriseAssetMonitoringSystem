@@ -5,6 +5,7 @@ import com.example.EnterpriseAssetMonitoringSystem.dto.ScheduleMaintenanceDTO;
 import com.example.EnterpriseAssetMonitoringSystem.entity.MaintenanceLog;
 import com.example.EnterpriseAssetMonitoringSystem.service.MaintenanceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
