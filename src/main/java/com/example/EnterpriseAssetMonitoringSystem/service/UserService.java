@@ -48,7 +48,7 @@ public class UserService {
     public User updateRoleByManager(Long requesterId, Long userId, String role) {
         User requester = getUserById(requesterId);
         if (requester.getRole() != Role.MANAGER) {
-            throw new RuntimeException("Only MANAGERS can update roles");
+            throw new RuntimeException("Only MANAGERs can update roles");
         }
         return updateRole(userId, role);
     }

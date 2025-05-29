@@ -32,5 +32,4 @@ public class UserController {
                                @RequestParam Long requesterId) {
         return userService.updateRoleByManager(requesterId, id, role);
     }
-
 }
