@@ -26,5 +26,5 @@ public class MaintenanceLog {
 
     private LocalDate scheduledDate;    // When maintenance was scheduled
     private LocalDate completedDate;    // When it was actually completed
-    private String remarks;             // Optional description of maintenance performed
+    private String remarks;             // Optional description of maintenance performed
 }
