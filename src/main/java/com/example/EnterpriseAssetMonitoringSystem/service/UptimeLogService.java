@@ -88,4 +88,5 @@ public class UptimeLogService {
     public List<UptimeLog> getLogsByAsset(Long assetId) {
         return uptimeRepo.findByAssetId(assetId);
     }
+
 }
