@@ -7,7 +7,7 @@ import com.example.EnterpriseAssetMonitoringSystem.entity.User;
 import com.example.EnterpriseAssetMonitoringSystem.repository.AssetRepository;
 import com.example.EnterpriseAssetMonitoringSystem.repository.UserRepository;
 import com.example.EnterpriseAssetMonitoringSystem.service.AssetService;
-import com.example.EnterpriseAssetMonitoringSystem.service.UptimeService;
+import com.example.EnterpriseAssetMonitoringSystem.service.UptimeLogService;
 import com.example.EnterpriseAssetMonitoringSystem.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ public class AssetServiceTest {
     private UserService userService;
 
     @Mock
-    private UptimeService uptimeService;
+    private UptimeLogService uptimeService;
 
     @BeforeEach
     void setUp() {

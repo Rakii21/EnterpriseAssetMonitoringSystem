@@ -16,7 +16,7 @@ public class AssetService {
 
     private final AssetRepository assetRepo;
     private final UserService userService;
-    private final UptimeService uptimeService;
+    private final UptimeLogService uptimeService;
 
     public Asset addAsset(AssetDTO dto) {
         User user = userService.getUserById(dto.getCreatedByUserId());
