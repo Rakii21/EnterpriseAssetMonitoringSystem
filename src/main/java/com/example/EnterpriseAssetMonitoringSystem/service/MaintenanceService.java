@@ -6,6 +6,8 @@ import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
 import com.example.EnterpriseAssetMonitoringSystem.entity.MaintenanceLog;
 import com.example.EnterpriseAssetMonitoringSystem.entity.Role;
 import com.example.EnterpriseAssetMonitoringSystem.entity.User;
+import com.example.EnterpriseAssetMonitoringSystem.exception.MaintenanceException;
+import com.example.EnterpriseAssetMonitoringSystem.exception.UnauthorizedException;
 import com.example.EnterpriseAssetMonitoringSystem.repository.AssetRepository;
 import com.example.EnterpriseAssetMonitoringSystem.repository.MaintenanceLogRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +26,11 @@ public class MaintenanceService {
     public MaintenanceLog scheduleMaintenance(ScheduleMaintenanceDTO dto, Long userId) {
         User user = userService.getUserById(userId);
         if (user.getRole() != Role.OPERATOR) {
-            throw new RuntimeException("Only OPERATORs can schedule maintenance");
+            throw new UnauthorizedException("Only OPERATORs can schedule maintenance");
         }
 
         Asset asset = assetRepo.findById(dto.getAssetId())
-                .orElseThrow(() -> new RuntimeException("Asset not found"));
+                .orElseThrow(() -> new MaintenanceException("Asset not found"));
 
         MaintenanceLog log = new MaintenanceLog();
         log.setAsset(asset);
@@ -44,10 +46,10 @@ public class MaintenanceService {
     public MaintenanceLog completeMaintenance(CompleteMaintenanceDTO dto, Long userId) {
         User user = userService.getUserById(userId);
         if (user.getRole() != Role.OPERATOR) {
-            throw new RuntimeException("Only OPERATORs can complete maintenance");
+            throw new UnauthorizedException("Only OPERATORs can complete maintenance");
         }
         MaintenanceLog log = maintenanceRepo.findById(dto.getLogId())
-                .orElseThrow(() -> new RuntimeException("Maintenance log not found"));
+                .orElseThrow(() -> new MaintenanceException("Maintenance log not found"));
         log.setCompletedDate(dto.getCompletedDate());
         log.setRemarks(dto.getRemarks());
         MaintenanceLog saved = maintenanceRepo.save(log);

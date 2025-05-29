@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -17,10 +19,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.openMocks;
+import org.springframework.http.HttpStatus;
 
 public class MaintenanceControllerTest {
 
     @Mock private MaintenanceService maintenanceService;
+    @Mock private BindingResult bindingResult;
     @InjectMocks private MaintenanceController controller;
 
     @BeforeEach
@@ -37,12 +41,15 @@ public class MaintenanceControllerTest {
         MaintenanceLog log = new MaintenanceLog();
         log.setScheduledDate(dto.getScheduledDate());
 
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(maintenanceService.scheduleMaintenance(dto, 100L)).thenReturn(log);
 
-        MaintenanceLog result = controller.schedule(dto, 100L);
+        ResponseEntity<?> response = controller.schedule(dto, bindingResult, 100L);
 
-        assertNotNull(result);
-        assertEquals(dto.getScheduledDate(), result.getScheduledDate());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody() instanceof MaintenanceLog);
+        assertEquals(dto.getScheduledDate(), ((MaintenanceLog) response.getBody()).getScheduledDate());
+
         verify(maintenanceService, times(1)).scheduleMaintenance(dto, 100L);
     }
 
@@ -56,11 +63,15 @@ public class MaintenanceControllerTest {
         MaintenanceLog log = new MaintenanceLog();
         log.setRemarks("Fixed");
 
+        when(bindingResult.hasErrors()).thenReturn(false);
         when(maintenanceService.completeMaintenance(dto, 200L)).thenReturn(log);
 
-        MaintenanceLog result = controller.complete(dto, 200L);
+        ResponseEntity<?> response = controller.complete(dto, bindingResult, 200L);
 
-        assertEquals("Fixed", result.getRemarks());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody() instanceof MaintenanceLog);
+        assertEquals("Fixed", ((MaintenanceLog) response.getBody()).getRemarks());
+
         verify(maintenanceService, times(1)).completeMaintenance(dto, 200L);
     }
 
@@ -71,9 +82,11 @@ public class MaintenanceControllerTest {
 
         when(maintenanceService.getLogsByAsset(3L)).thenReturn(Arrays.asList(log1, log2));
 
-        List<MaintenanceLog> result = controller.getLogsByAsset(3L);
+        ResponseEntity<List<MaintenanceLog>> response = controller.getLogsByAsset(3L);
 
-        assertEquals(2, result.size());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(2, response.getBody().size());
+
         verify(maintenanceService, times(1)).getLogsByAsset(3L);
     }
 }

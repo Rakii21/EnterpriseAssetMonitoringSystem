@@ -9,7 +9,7 @@ import lombok.Data;
 // to capture user registration details from client
 
 @Data
-public class RegisterRequest {
+public class RegisterRequestDTO {
 	
 	@NotBlank(message = "Name is required")
     private String name;

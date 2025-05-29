@@ -2,6 +2,7 @@ package com.example.EnterpriseAssetMonitoringSystem.service;
 
 import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
 import com.example.EnterpriseAssetMonitoringSystem.entity.UptimeLog;
+import com.example.EnterpriseAssetMonitoringSystem.exception.ObjectNotFoundException;
 import com.example.EnterpriseAssetMonitoringSystem.repository.AssetRepository;
 import com.example.EnterpriseAssetMonitoringSystem.repository.UptimeLogRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class UptimeLogService {
 
     public void createUptime(Asset asset1) {
         Asset asset = assetRepo.findById(asset1.getId())
-                .orElseThrow(() -> new RuntimeException("Asset not found"));
+                .orElseThrow(() -> new ObjectNotFoundException("Asset not found"));
 
         UptimeLog log = new UptimeLog();
         log.setAsset(asset);
@@ -33,12 +34,11 @@ public class UptimeLogService {
     }
     public void createDownTime(Asset asset1){
         Asset asset = assetRepo.findById(asset1.getId())
-                .orElseThrow(() -> new RuntimeException("Asset not found"));
+                .orElseThrow(() -> new ObjectNotFoundException("Asset not found"));
         Optional<UptimeLog> uptime = uptimeRepo.findByAssetIdAndStatus(asset.getId(), UptimeLog.Status.UP);
         UptimeLog up1 = uptime.get();
         if(up1.getStatus() == UptimeLog.Status.UP && up1.getEndTime() == null){
             up1.setEndTime(LocalDateTime.now());
-            //up1.setStatus(UptimeLog.Status.DOWN);
             uptimeRepo.save(up1);
         }
         UptimeLog downtime=new UptimeLog();
@@ -48,26 +48,10 @@ public class UptimeLogService {
         uptimeRepo.save(downtime);
 
     }
-//    public void updateDownTime(Asset asset1){
-//        Asset asset = assetRepo.findById(asset1.getId())
-//                .orElseThrow(() -> new RuntimeException("Asset not found"));
-//        Optional<UptimeLog> downtime = uptimeRepo.findByAssetIdAndStatus(asset.getId(), UptimeLog.Status.DOWN);
-//        UptimeLog down1 = downtime.get();
-//        if(down1.getStatus() == UptimeLog.Status.DOWN && down1.getEndTime() == null){
-//            down1.setEndTime(LocalDateTime.now());
-    ////            down1.setStatus(UptimeLog.Status.DOWN);
-//            uptimeRepo.save(down1);
-//        }
-//        UptimeLog uptime=new UptimeLog();
-//        uptime.setAsset(asset);
-//        uptime.setStartTime(LocalDateTime.now
-//        uptime.setStatus(UptimeLog.Status.UP);
-//        uptimeRepo.save(uptime);
-//
-//    }
+
     public void updateDownTime(Asset asset1) {
         Asset asset = assetRepo.findById(asset1.getId())
-                .orElseThrow(() -> new RuntimeException("Asset not found"));
+                .orElseThrow(() -> new ObjectNotFoundException("Asset not found"));
         Optional<UptimeLog> downtime = uptimeRepo.findByAssetIdAndStatus(asset.getId(), UptimeLog.Status.DOWN);
 
         if (downtime.isPresent()) {
