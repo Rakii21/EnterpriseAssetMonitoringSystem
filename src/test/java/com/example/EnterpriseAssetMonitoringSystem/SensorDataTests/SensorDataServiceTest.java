@@ -1,4 +1,4 @@
-package com.example.EnterpriseAssetMonitoringSystem.ServiceTesting;
+package com.example.EnterpriseAssetMonitoringSystem.SensorDataTests;
 
 import com.example.EnterpriseAssetMonitoringSystem.dto.SensorDataDTO;
 import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
@@ -22,7 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.MockitoAnnotations.openMocks;
 import org.springframework.jdbc.core.RowMapper;
 
-public class SensorDataServiceTest {
+public class
+SensorDataServiceTest {
 
     @Mock
     private SensorDataRepository sensorRepo;
