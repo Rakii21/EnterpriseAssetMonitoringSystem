@@ -9,7 +9,7 @@ import com.example.EnterpriseAssetMonitoringSystem.entity.User;
 import com.example.EnterpriseAssetMonitoringSystem.repository.AssetRepository;
 import com.example.EnterpriseAssetMonitoringSystem.repository.MaintenanceLogRepository;
 import com.example.EnterpriseAssetMonitoringSystem.service.MaintenanceService;
-import com.example.EnterpriseAssetMonitoringSystem.service.UptimeService;
+import com.example.EnterpriseAssetMonitoringSystem.service.UptimeLogService;
 import com.example.EnterpriseAssetMonitoringSystem.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ public class MaintenanceServiceTest {
     @Mock private MaintenanceLogRepository maintenanceRepo;
     @Mock private AssetRepository assetRepo;
     @Mock private UserService userService;
-    @Mock private UptimeService uptimeService;
+    @Mock private UptimeLogService uptimeService;
 
     @InjectMocks
     private MaintenanceService maintenanceService;

@@ -20,7 +20,7 @@ public class MaintenanceService {
     private final MaintenanceLogRepository maintenanceRepo;
     private final AssetRepository assetRepo;
     private final UserService userService;
-    private final UptimeService uptimeService;
+    private final UptimeLogService uptimeService;
     public MaintenanceLog scheduleMaintenance(ScheduleMaintenanceDTO dto, Long userId) {
         User user = userService.getUserById(userId);
         if (user.getRole() != Role.OPERATOR) {
