@@ -1,11 +1,13 @@
 package com.example.EnterpriseAssetMonitoringSystem.service;
-import com.example.EnterpriseAssetMonitoringSystem.entity.UptimeLog;
+
 import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
+import com.example.EnterpriseAssetMonitoringSystem.entity.UptimeLog;
 import com.example.EnterpriseAssetMonitoringSystem.repository.AssetRepository;
 import com.example.EnterpriseAssetMonitoringSystem.repository.UptimeLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +46,7 @@ public class UptimeLogService {
         downtime.setStartTime(LocalDateTime.now());
         downtime.setStatus(UptimeLog.Status.DOWN);
         uptimeRepo.save(downtime);
+
     }
 //    public void updateDownTime(Asset asset1){
 //        Asset asset = assetRepo.findById(asset1.getId())
@@ -84,5 +87,5 @@ public class UptimeLogService {
 
     public List<UptimeLog> getLogsByAsset(Long assetId) {
         return uptimeRepo.findByAssetId(assetId);
-}
+    }
 }

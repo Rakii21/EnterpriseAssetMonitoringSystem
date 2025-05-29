@@ -1,22 +1,21 @@
 package com.example.EnterpriseAssetMonitoringSystem.dto;
 
-import jakarta.transaction.Status;
+import com.example.EnterpriseAssetMonitoringSystem.entity.UptimeLog.Status;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-//DTP to receive uptime log entries
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Data
-public class UptimeLogdto {
-    @NotNull(message = "A sset ID is required")
+public class UptimeLogDTO {
+    @NotNull(message = "Asset ID is required")
     private Long assetId;
 
     @NotNull(message = "Start time is required")
-    private LocalTime startTime;
+    private LocalDateTime startTime;
 
     @NotNull(message = "End time is required")
-    private LocalTime endTime;
+    private LocalDateTime endTime;
 
     @NotNull(message = "Status is required")
     private Status status;

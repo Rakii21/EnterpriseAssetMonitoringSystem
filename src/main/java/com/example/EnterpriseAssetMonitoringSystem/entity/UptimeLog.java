@@ -33,5 +33,5 @@ public class UptimeLog {
     public enum Status {
         UP,
         DOWN
-    }
+}
 }
