@@ -4,6 +4,7 @@ import com.example.EnterpriseAssetMonitoringSystem.dto.RegisterRequest;
 import com.example.EnterpriseAssetMonitoringSystem.dto.LoginRequest;
 import com.example.EnterpriseAssetMonitoringSystem.entity.User;
 import com.example.EnterpriseAssetMonitoringSystem.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 // to handle user registration and login.
-
+@Tag(name="Auth")
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor

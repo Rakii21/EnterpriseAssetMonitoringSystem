@@ -1,4 +1,4 @@
-package com.example.EnterpriseAssetMonitoringSystem.ControllerTesting;
+package com.example.EnterpriseAssetMonitoringSystem.SensorDataTests;
 
 import com.example.EnterpriseAssetMonitoringSystem.controller.SensorDataController;
 import com.example.EnterpriseAssetMonitoringSystem.dto.SensorDataDTO;
@@ -32,7 +32,7 @@ public class SensorDataControllerTest {
 
     @Test
     void testSaveSensorData() {
-        // Arrange
+
         SensorDataDTO dto = new SensorDataDTO();
         dto.setAssetId(1L);
 
@@ -40,7 +40,6 @@ public class SensorDataControllerTest {
         asset.setId(1L);
 
         SensorData sensorData = new SensorData();
-        sensorData.setId(10L);
         sensorData.setAsset(asset);
         sensorData.setTemperature(25.0);
         sensorData.setPressure(1.01);
@@ -61,7 +60,7 @@ public class SensorDataControllerTest {
 
     @Test
     void testGetSensorDataByAssetId() {
-        // Arrange
+
         Long assetId = 2L;
         SensorData data1 = new SensorData(1L, new Asset(), 22.5, 1.00, LocalDateTime.now());
         SensorData data2 = new SensorData(2L, new Asset(), 24.0, 1.02, LocalDateTime.now());
@@ -71,7 +70,7 @@ public class SensorDataControllerTest {
 
         when(sensorService.getDataByAssetId(assetId)).thenReturn(mockList);
 
-        // Act
+        // Actual
         List<SensorData> result = controller.getSensorData(assetId);
 
         // Assert
