@@ -5,6 +5,8 @@ import com.example.EnterpriseAssetMonitoringSystem.dto.ScheduleMaintenanceDTO;
 import com.example.EnterpriseAssetMonitoringSystem.entity.MaintenanceLog;
 import com.example.EnterpriseAssetMonitoringSystem.service.MaintenanceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,17 +23,23 @@ public class MaintenanceController {
     private final MaintenanceService maintenanceService;
 
     @PostMapping("/schedule")
-    public MaintenanceLog schedule(@RequestBody @Valid ScheduleMaintenanceDTO dto, @RequestParam Long userId) {
-        return maintenanceService.scheduleMaintenance(dto, userId);
+    public ResponseEntity<?> schedule(@RequestBody @Valid ScheduleMaintenanceDTO dto,BindingResult bindingResult, @RequestParam Long userId) {
+        if(bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getFieldErrors(),HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(maintenanceService.scheduleMaintenance(dto, userId));
     }
 
     @PutMapping("/complete")
-    public MaintenanceLog complete(@RequestBody @Valid CompleteMaintenanceDTO dto, @RequestParam Long userId) {
-        return maintenanceService.completeMaintenance(dto, userId);
+    public ResponseEntity<?> complete(@RequestBody @Valid CompleteMaintenanceDTO dto,BindingResult bindingResult, @RequestParam Long userId) {
+        if(bindingResult.hasErrors()) {
+            return new ResponseEntity<>(bindingResult.getFieldErrors(),HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(maintenanceService.completeMaintenance(dto, userId));
     }
 
     @GetMapping("/asset/{assetId}")
-    public List<MaintenanceLog> getLogsByAsset(@PathVariable Long assetId) {
-        return maintenanceService.getLogsByAsset(assetId);
+    public ResponseEntity<List<MaintenanceLog>> getLogsByAsset(@PathVariable Long assetId) {
+        return ResponseEntity.ok(maintenanceService.getLogsByAsset(assetId));
     }
 }
