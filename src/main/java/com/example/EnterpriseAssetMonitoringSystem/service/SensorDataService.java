@@ -49,10 +49,13 @@ public class SensorDataService {
             return sensorData;
 
         });
+
         return sensorRepo.save(data);
     }
+
     // get all readings for a given asset
     public List<SensorData> getDataByAssetId(Long assetId){
+
         return sensorRepo.findByAssetId(assetId);
     }
 

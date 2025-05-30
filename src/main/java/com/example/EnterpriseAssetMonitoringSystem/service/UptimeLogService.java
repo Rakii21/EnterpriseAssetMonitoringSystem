@@ -7,7 +7,6 @@ import com.example.EnterpriseAssetMonitoringSystem.repository.UptimeLogRepositor
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -86,6 +85,7 @@ public class UptimeLogService {
     }
 
     public List<UptimeLog> getLogsByAsset(Long assetId) {
+
         return uptimeRepo.findByAssetId(assetId);
     }
 

@@ -26,5 +26,4 @@ public class SensorData {
 
     private LocalDateTime timestamp; //time reading was captured
 
-
 }
