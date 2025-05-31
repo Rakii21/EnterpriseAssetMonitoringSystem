@@ -3,6 +3,7 @@ package com.example.EnterpriseAssetMonitoringSystem.controller;
 import com.example.EnterpriseAssetMonitoringSystem.dto.AssetDTO;
 import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
 import com.example.EnterpriseAssetMonitoringSystem.service.AssetService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name="Asset")
 @RestController
 @RequestMapping("/api/assets")
 @RequiredArgsConstructor

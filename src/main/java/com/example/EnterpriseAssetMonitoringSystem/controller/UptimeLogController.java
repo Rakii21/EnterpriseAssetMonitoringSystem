@@ -1,12 +1,10 @@
 
 package com.example.EnterpriseAssetMonitoringSystem.controller;
 
-import com.example.EnterpriseAssetMonitoringSystem.dto.UptimeLogDTO;
 import com.example.EnterpriseAssetMonitoringSystem.entity.UptimeLog;
 import com.example.EnterpriseAssetMonitoringSystem.service.UptimeLogService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

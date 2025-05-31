@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,17 +18,14 @@ public class SecurityConfig {
     // Allows Swagger and public access to API docs
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        System.out.println("Custom Log: Filter Chain Initialized");
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for APIs
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html"
-                        ).permitAll() // Allow Swagger
-                        .anyRequest().authenticated() // Secure all other endpoints
+                        .anyRequest().permitAll()   // <-- Allow all requests without auth
                 )
-                .httpBasic(Customizer.withDefaults()); // Or formLogin() if using UI login
+                .formLogin(form -> form.disable());
 
         return http.build();
     }

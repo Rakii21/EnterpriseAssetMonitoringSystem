@@ -1,4 +1,4 @@
-package com.example.EnterpriseAssetMonitoringSystem.usertest;
+package com.example.EnterpriseAssetMonitoringSystem.userTest;
 
 import com.example.EnterpriseAssetMonitoringSystem.entity.*;
 import com.example.EnterpriseAssetMonitoringSystem.repository.UserRepository;
