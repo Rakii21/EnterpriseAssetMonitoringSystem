@@ -1,4 +1,4 @@
-package com.example.EnterpriseAssetMonitoringSystem.usertest;
+package com.example.EnterpriseAssetMonitoringSystem.userTest;
 
 import com.example.EnterpriseAssetMonitoringSystem.entity.Role;
 import com.example.EnterpriseAssetMonitoringSystem.entity.User;
@@ -6,7 +6,7 @@ import com.example.EnterpriseAssetMonitoringSystem.exception.UnauthorizedExcepti
 import com.example.EnterpriseAssetMonitoringSystem.exception.UserInvalidException;
 import com.example.EnterpriseAssetMonitoringSystem.exception.UserNotFoundException;
 import com.example.EnterpriseAssetMonitoringSystem.repository.UserRepository;
-import com.example.EnterpriseAssetMonitoringSystem.service.UserService;
+import com.example.EnterpriseAssetMonitoringSystem.uptimeLogTest.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
