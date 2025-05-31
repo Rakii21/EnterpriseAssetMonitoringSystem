@@ -124,6 +124,7 @@ To build an efficient and modular enterprise-grade asset monitoring system to:
 
 ## 🗂 Project Structure
 
+```bash
 com.example.EnterpriseAssetMonitoringSystem
 ├── config
 │ ├── SecurityConfig.java
@@ -176,7 +177,7 @@ com.example.EnterpriseAssetMonitoringSystem
 │ └── UserService.java
 │
 └── EnterpriseAssetMonitoringSystemApplication.java
-
+```
 
 ## ▶ How to Run the Project
 
@@ -221,5 +222,5 @@ com.example.EnterpriseAssetMonitoringSystem
 | *Rakesh E*             | Project Lead, Maintenance Module |
 | *Yuvathika B*          | User Module               |
 | *Srinithi R*           | Asset Module              |
-| *Kaustuk Saraf *       | Sensor Data Module               |
+| *Kaustuk Saraf*        | Sensor Data Module               |
 | *Anamika Jain*         | Uptime Log Module              |
