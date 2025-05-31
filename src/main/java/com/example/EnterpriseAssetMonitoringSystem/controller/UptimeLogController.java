@@ -2,7 +2,7 @@
 package com.example.EnterpriseAssetMonitoringSystem.controller;
 
 import com.example.EnterpriseAssetMonitoringSystem.entity.UptimeLog;
-import com.example.EnterpriseAssetMonitoringSystem.uptimeLogTest.UptimeLogService;
+import com.example.EnterpriseAssetMonitoringSystem.service.UptimeLogService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
