@@ -1,4 +1,4 @@
-package com.example.EnterpriseAssetMonitoringSystem.service;
+package com.example.EnterpriseAssetMonitoringSystem.uptimeLogTest;
 
 import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
 import com.example.EnterpriseAssetMonitoringSystem.entity.UptimeLog;
@@ -8,7 +8,6 @@ import com.example.EnterpriseAssetMonitoringSystem.repository.UptimeLogRepositor
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

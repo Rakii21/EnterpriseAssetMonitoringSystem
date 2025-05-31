@@ -1,11 +1,11 @@
-package com.example.EnterpriseAssetMonitoringSystem.SensorDataTests;
+package com.example.EnterpriseAssetMonitoringSystem.sensorDataTest;
 
 import com.example.EnterpriseAssetMonitoringSystem.dto.SensorDataDTO;
 import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
 import com.example.EnterpriseAssetMonitoringSystem.entity.SensorData;
 import com.example.EnterpriseAssetMonitoringSystem.repository.AssetRepository;
 import com.example.EnterpriseAssetMonitoringSystem.repository.SensorDataRepository;
-import com.example.EnterpriseAssetMonitoringSystem.service.SensorDataService;
+import com.example.EnterpriseAssetMonitoringSystem.uptimeLogTest.SensorDataService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

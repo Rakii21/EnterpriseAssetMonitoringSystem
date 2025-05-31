@@ -3,7 +3,7 @@ package com.example.EnterpriseAssetMonitoringSystem.controller;
 import com.example.EnterpriseAssetMonitoringSystem.dto.CompleteMaintenanceDTO;
 import com.example.EnterpriseAssetMonitoringSystem.dto.ScheduleMaintenanceDTO;
 import com.example.EnterpriseAssetMonitoringSystem.entity.MaintenanceLog;
-import com.example.EnterpriseAssetMonitoringSystem.service.MaintenanceService;
+import com.example.EnterpriseAssetMonitoringSystem.uptimeLogTest.MaintenanceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
