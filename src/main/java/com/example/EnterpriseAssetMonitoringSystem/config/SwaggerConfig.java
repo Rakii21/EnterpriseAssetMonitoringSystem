@@ -23,7 +23,6 @@ public class SwaggerConfig {
                         new Tag().name("Sensor Data").description("Temperature and Pressure Reading"),
                         new Tag().name("Maintenance").description("Schedule Maintenance"),
                         new Tag().name("Uptime Log").description("Updated Log")
-
                         ));
 
     }

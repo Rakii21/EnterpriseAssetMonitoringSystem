@@ -4,6 +4,7 @@ import com.example.EnterpriseAssetMonitoringSystem.entity.User;
 import com.example.EnterpriseAssetMonitoringSystem.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,19 +19,21 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<?> getAllUsers() {
+        List<User> userList = userService.getAllUsers();
+        return ResponseEntity.ok(userList);
     }
     
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping("/{id}/role")
-    public User updateUserRole(@PathVariable Long id,
+    public ResponseEntity<?> updateUserRole(@PathVariable Long id,
                                @RequestParam String role,
                                @RequestParam Long requesterId) {
-        return userService.updateRoleByManager(requesterId, id, role);
+        return ResponseEntity.ok(userService.updateRoleByManager(requesterId, id, role));
     }
 }

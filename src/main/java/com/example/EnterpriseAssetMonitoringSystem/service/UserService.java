@@ -2,6 +2,9 @@ package com.example.EnterpriseAssetMonitoringSystem.service;
 
 import com.example.EnterpriseAssetMonitoringSystem.entity.User;
 import com.example.EnterpriseAssetMonitoringSystem.entity.Role;
+import com.example.EnterpriseAssetMonitoringSystem.exception.UnauthorizedException;
+import com.example.EnterpriseAssetMonitoringSystem.exception.UserInvalidException;
+import com.example.EnterpriseAssetMonitoringSystem.exception.UserNotFoundException;
 import com.example.EnterpriseAssetMonitoringSystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +22,7 @@ public class UserService {
     // Registers a new user
     public User register(User user) {
         if (userRepo.findByEmail(user.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already in use");
+            throw new UserInvalidException("Email already in use");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepo.save(user);
@@ -29,7 +32,7 @@ public class UserService {
     public User login(String email, String password) {
         return userRepo.findByEmail(email)
                 .filter(u -> passwordEncoder.matches(password, u.getPassword()))
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+                .orElseThrow(() -> new UserInvalidException("Invalid email or password"));
     }
 
     // Returns list of all users
@@ -48,7 +51,7 @@ public class UserService {
     public User updateRoleByManager(Long requesterId, Long userId, String role) {
         User requester = getUserById(requesterId);
         if (requester.getRole() != Role.MANAGER) {
-            throw new RuntimeException("Only MANAGERs can update roles");
+            throw new UnauthorizedException("Only MANAGERs can update roles");
         }
         return updateRole(userId, role);
     }
@@ -56,14 +59,14 @@ public class UserService {
     // Fetch role info
     public User getUserById(Long id) {
         return userRepo.findById(id)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
     
     // Check role
     public void validateUserRole(Long userId, Role expectedRole) {
         User user = getUserById(userId);
         if (user.getRole() != expectedRole) {
-            throw new RuntimeException("Access denied for role: " + user.getRole());
+            throw new UnauthorizedException("Access denied for role: " + user.getRole());
         }
     }
 }

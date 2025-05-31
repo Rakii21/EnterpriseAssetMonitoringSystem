@@ -19,7 +19,6 @@ public class SensorDataController {
 
     @PostMapping("/send-data")
     public SensorData saveSensorData(@RequestBody @Valid SensorDataDTO dto){
-
         return sensorService.saveSensorData(dto);
     }
 

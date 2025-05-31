@@ -2,6 +2,7 @@ package com.example.EnterpriseAssetMonitoringSystem.service;
 import com.example.EnterpriseAssetMonitoringSystem.dto.SensorDataDTO;
 import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
 import com.example.EnterpriseAssetMonitoringSystem.entity.SensorData;
+import com.example.EnterpriseAssetMonitoringSystem.exception.ObjectNotFoundException;
 import com.example.EnterpriseAssetMonitoringSystem.repository.AssetRepository;
 import com.example.EnterpriseAssetMonitoringSystem.repository.SensorDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class SensorDataService {
         // dto.getAssetId() extracts the assetId from incoming request
         // tries to fetch corresponding Asset entity from the DB using assetRepo
         // if asset doesn't exist then it throws exception
-        Asset asset = assetRepo.findById(dto.getAssetId()).orElseThrow(()->new RuntimeException("Asset with ID" + dto.getAssetId() + "not found"));
+        Asset asset = assetRepo.findById(dto.getAssetId()).orElseThrow(()->new ObjectNotFoundException("Asset with ID" + dto.getAssetId() + "not found"));
 
         //Fetch random row from dummy_sensor_data
         String sql="SELECT temperature, pressure FROM dummy_sensor_data ORDER BY RAND() LIMIT 1";
@@ -55,7 +56,6 @@ public class SensorDataService {
 
     // get all readings for a given asset
     public List<SensorData> getDataByAssetId(Long assetId){
-
         return sensorRepo.findByAssetId(assetId);
     }
 
