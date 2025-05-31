@@ -1,4 +1,4 @@
-package com.example.EnterpriseAssetMonitoringSystem.service;
+package com.example.EnterpriseAssetMonitoringSystem.uptimeLogTest;
 
 import com.example.EnterpriseAssetMonitoringSystem.dto.CompleteMaintenanceDTO;
 import com.example.EnterpriseAssetMonitoringSystem.dto.ScheduleMaintenanceDTO;

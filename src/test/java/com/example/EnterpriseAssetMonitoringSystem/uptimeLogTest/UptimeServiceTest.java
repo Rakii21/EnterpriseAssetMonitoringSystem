@@ -1,13 +1,10 @@
-package com.example.EnterpriseAssetMonitoringSystem.service;
+package com.example.EnterpriseAssetMonitoringSystem.uptimeLogTest;
 
-import com.example.EnterpriseAssetMonitoringSystem.dto.UptimeLogDTO;
 import com.example.EnterpriseAssetMonitoringSystem.entity.Asset;
 import com.example.EnterpriseAssetMonitoringSystem.entity.UptimeLog;
 import com.example.EnterpriseAssetMonitoringSystem.entity.UptimeLog.Status;
 import com.example.EnterpriseAssetMonitoringSystem.repository.AssetRepository;
 import com.example.EnterpriseAssetMonitoringSystem.repository.UptimeLogRepository;
-import com.example.EnterpriseAssetMonitoringSystem.service.UptimeLogService;
-import com.example.EnterpriseAssetMonitoringSystem.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -2,7 +2,7 @@ package com.example.EnterpriseAssetMonitoringSystem.controller;
 
 import com.example.EnterpriseAssetMonitoringSystem.dto.SensorDataDTO;
 import com.example.EnterpriseAssetMonitoringSystem.entity.SensorData;
-import com.example.EnterpriseAssetMonitoringSystem.service.SensorDataService;
+import com.example.EnterpriseAssetMonitoringSystem.uptimeLogTest.SensorDataService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
