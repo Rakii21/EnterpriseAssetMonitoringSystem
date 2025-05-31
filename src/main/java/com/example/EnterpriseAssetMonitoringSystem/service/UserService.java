@@ -41,32 +41,19 @@ public class UserService {
     }
 
     // Updates a user’s role
-    public User updateRole(Long userId, String role) {
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        user.setRole(Enum.valueOf(com.example.EnterpriseAssetMonitoringSystem.entity.Role.class, role.toUpperCase()));
-        return userRepo.save(user);
-    }
-
     public User updateRoleByManager(Long requesterId, Long userId, String role) {
         User requester = getUserById(requesterId);
         if (requester.getRole() != Role.MANAGER) {
             throw new UnauthorizedException("Only MANAGERs can update roles");
         }
-        return updateRole(userId, role);
+        User user = getUserById(userId);
+        user.setRole(Role.valueOf(role.toUpperCase()));
+        return userRepo.save(user);
     }
-    
-    // Fetch role info
+
+    // Fetch user info
     public User getUserById(Long id) {
         return userRepo.findById(id)
-            .orElseThrow(() -> new UserNotFoundException("User not found"));
-    }
-    
-    // Check role
-    public void validateUserRole(Long userId, Role expectedRole) {
-        User user = getUserById(userId);
-        if (user.getRole() != expectedRole) {
-            throw new UnauthorizedException("Access denied for role: " + user.getRole());
-        }
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 }
