@@ -132,7 +132,7 @@ com.example.EnterpriseAssetMonitoringSystem
 │
 ├── controller
 │ ├── AssetController.java
-│ ├── AuthController.java
+│ ├── AuthenticationController.java
 │ ├── MaintenanceController.java
 │ ├── SensorController.java
 │ ├── UptimeController.java
@@ -170,7 +170,6 @@ com.example.EnterpriseAssetMonitoringSystem
 │
 ├── service
 │ ├── AssetService.java
-│ ├── AuthService.java
 │ ├── MaintenanceService.java
 │ ├── SensorService.java
 │ ├── UptimeService.java
@@ -200,7 +199,7 @@ com.example.EnterpriseAssetMonitoringSystem
 3. **Update application.properties**
   spring.datasource.url=jdbc:mysql://localhost:3306/assetmanagementtest?useSSL=false
   spring.datasource.username=root
-  spring.datasource.password=yourpassword
+  spring.datasource.password=Password
 
   spring.jpa.hibernate.ddl-auto=update
   spring.jpa.show-sql=true
